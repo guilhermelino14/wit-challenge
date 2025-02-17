@@ -16,7 +16,10 @@ export const getWeather = async (city: string, unit: "metric" | "imperial") => {
       throw new Error("Error getting city weather");
     }
 
-    return await forecastResponse.json();
+    const forecastData = await forecastResponse.json();
+    const datalat = coord.lat;
+    const datalon = coord.lon;
+    return await {forecastData, datalat, datalon};
   } catch (error) {
     throw new Error(error instanceof Error ? error.message : "An error occurred");
   }

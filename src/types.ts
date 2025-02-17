@@ -21,3 +21,9 @@ export interface Weather {
 export interface SearchFormProps {
   onSearch: (city: string) => void;
 }
+
+export interface WeatherMapProps {
+  lat: number;
+  lon: number;
+  city: string;
+}
