@@ -5,6 +5,9 @@ import { Weather } from "./types";
 import WeatherMap from "./components/WeatherMap";
 import TemperatureChart from "./components/TemperatureChart";
 import DaySelector from './components/DaySelector';
+import { Box, Container, Grid, IconButton, Paper, Typography } from '@mui/material';
+import ThermostatIcon from '@mui/icons-material/Thermostat';
+
 
 function App() {
   const [weather, setWeather] = useState<Weather | null>(null);
@@ -19,7 +22,7 @@ function App() {
       handleSearch(weather.city.name);
     }
   }, [unit]);
-  
+
   const handleSearch = async (city: string) => {
     setWeather(null);
     setError(null);
@@ -65,39 +68,83 @@ function App() {
 
   return (
     <>
-      <SearchForm onSearch={handleSearch} />
-      <button onClick={toggleUnit}>
-        Change to {unit === "metric" ? "°F" : "°C"}
-      </button>
-      {error && <p>{error}</p>}
-      {weather ? (
-        <div>
-          <h2>{weather.city.name}</h2>
-          <ul>
-            {weather.list.map((item: any) => (
-              <li key={item.dt}>
-                <strong>{item.dt_txt}</strong> - {item.main.temp} {unit === "metric" ? "°C" : "°F"}
-                {item?.coord}
-              </li>
-            ))}
-          </ul>
-          {lat && lon && <WeatherMap lat={lat} lon={lon} city={weather.city.name} />}
-
-          <DaySelector
-            days={days}
-            selectedDay={selectedDay}
-            onDaySelect={setSelectedDay}
-          />
-
-          <TemperatureChart
-            temperatures={selectedDayTemperatures}
-            unit={unit}
-            labels={selectedDayHours}
-          />
-        </div>
-      ) : (
-        <p>No weather data</p>
-      )}
+      <Container maxWidth="lg">
+        <Box sx={{ py: 4 }}>
+          <Typography variant="h3" align="center" color="primary" >
+            Weather Forecast
+          </Typography>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Paper elevation={3} sx={{ p: 2 }}>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                  <SearchForm onSearch={handleSearch} />
+                  <IconButton
+                    onClick={toggleUnit}
+                    color="primary"
+                    sx={{
+                      height: 56,
+                      width: 56,
+                      mt: '0 !important'
+                    }}
+                  >
+                    <ThermostatIcon />
+                    <Typography variant="button" sx={{ ml: 1 }}>
+                      {unit === "metric" ? "°C" : "°F"}
+                    </Typography>
+                  </IconButton>
+                </Box>
+              </Paper>
+            </Grid>
+            {error && (
+              <Grid item xs={12}>
+                <Paper elevation={3} sx={{ p: 2, bgcolor: '#ffebee' }}>
+                  <Typography color="error">{error}</Typography>
+                </Paper>
+              </Grid>
+            )}
+            {weather ? (
+              <>
+                <Grid item xs={12}>
+                  <Paper elevation={3} sx={{ p: 2 }}>
+                    <Typography variant="h4" gutterBottom>
+                      {weather.city.name}
+                    </Typography>
+                    <DaySelector
+                      days={days}
+                      selectedDay={selectedDay}
+                      onDaySelect={setSelectedDay}
+                    />
+                  </Paper>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Paper elevation={3} sx={{ p: 2 }}>
+                    <TemperatureChart
+                      temperatures={selectedDayTemperatures}
+                      unit={unit}
+                      labels={selectedDayHours}
+                    />
+                  </Paper>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Paper elevation={3} sx={{ p: 2, height: '100%' }}>
+                    {lat && lon && (
+                      <WeatherMap lat={lat} lon={lon} city={weather.city.name} />
+                    )}
+                  </Paper>
+                </Grid>
+              </>
+            ): (
+              <Grid item xs={12}>
+                <Paper elevation={3} sx={{ p: 4 }}>
+                  <Typography variant="h6" align="center" color="text.secondary">
+                    Enter a city name to see weather forecast
+                  </Typography>
+                </Paper>
+              </Grid>
+            )}
+          </Grid>
+        </Box>
+      </Container>
     </>
   )
 }

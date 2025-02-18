@@ -28,7 +28,7 @@ const TemperatureChart = ({ temperatures, unit, labels }: TemperatureChartProps)
   };
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+    <div style={{ height: '400px' ,maxWidth: '100%', margin: '0 auto' }}>
       <Line data={data} />
     </div>
   );
