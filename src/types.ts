@@ -27,3 +27,9 @@ export interface WeatherMapProps {
   lon: number;
   city: string;
 }
+
+export interface TemperatureChartProps{
+  temperatures: number[];
+  unit: "metric" | "imperial";
+  labels?: string[]
+}
