@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SearchForm from "./components/SearchForm"
 import { getWeather } from "./services/weatherService";
 import { Weather } from "./types";
@@ -14,6 +14,12 @@ function App() {
   const [lat, setLat] = useState<number | null>(null);
   const [selectedDay, setSelectedDay] = useState<number>(0);
 
+  useEffect(() => {
+    if (weather?.city.name) {
+      handleSearch(weather.city.name);
+    }
+  }, [unit]);
+  
   const handleSearch = async (city: string) => {
     setWeather(null);
     setError(null);
@@ -30,7 +36,6 @@ function App() {
 
   const toggleUnit = () => {
     setUnit((prevUnit) => (prevUnit === "metric" ? "imperial" : "metric"));
-    handleSearch(weather?.city.name || "");
   };
 
   const groupedByDay = weather?.list?.reduce((acc: Record<string, Array<{ hour: string, temp: number }>>, forecast: any) => {
@@ -57,6 +62,7 @@ function App() {
     : [];
 
 
+
   return (
     <>
       <SearchForm onSearch={handleSearch} />
@@ -76,13 +82,13 @@ function App() {
             ))}
           </ul>
           {lat && lon && <WeatherMap lat={lat} lon={lon} city={weather.city.name} />}
-          
-          <DaySelector 
+
+          <DaySelector
             days={days}
             selectedDay={selectedDay}
             onDaySelect={setSelectedDay}
           />
-          
+
           <TemperatureChart
             temperatures={selectedDayTemperatures}
             unit={unit}
