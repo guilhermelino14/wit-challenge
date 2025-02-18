@@ -33,3 +33,9 @@ export interface TemperatureChartProps{
   unit: "metric" | "imperial";
   labels?: string[]
 }
+
+export interface DaySelectorProps {
+  days: string[];
+  selectedDay: number;
+  onDaySelect: (index: number) => void;
+}
