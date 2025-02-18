@@ -14,7 +14,7 @@ const WeatherMap = ({ lat, lon, city }: WeatherMapProps) => {
   return (
     <MapContainer
       center={[lat, lon]}
-      zoom={10}
+      zoom={11}
       style={{ height: "400px", width: "100%", borderRadius: "10px", marginTop: "10px" }}
     >
       <TileLayer
