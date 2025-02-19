@@ -1,26 +1,59 @@
-import { DaySelectorProps } from "../types";
+import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { format } from 'date-fns';
+import { enAU } from 'date-fns/locale';
+import { DaySelectorProps } from '../types';
 
-const DaySelector = ({ days, selectedDay, onDaySelect }: DaySelectorProps) => {
+const DaySelector = ({ days, selectedDay, onDaySelect, temperatures }: DaySelectorProps) => {
+  const getMinMaxTemp = (temps: Array<{ hour: string; temp: number }>) => {
+    const allTemps = temps.map(t => t.temp);
+    return {
+      max: Math.max(...allTemps).toFixed(1),
+      min: Math.min(...allTemps).toFixed(1)
+    };
+  };
+
+  const formatDay = (dateStr: string) => {
+    const date = new Date(dateStr);
+    const formattedDate = format(date, "EEE, MMM d", { locale: enAU });
+    const { max, min } = getMinMaxTemp(temperatures[dateStr]);
+    
+    return `${formattedDate} - ${max}°/${min}°`;
+  };
+
   return (
-    <div style={{ marginBottom: '20px' }}>
-      {days.map((day, index) => (
-        <button
-          key={day}
-          onClick={() => onDaySelect(index)}
-          style={{
-            margin: '0 5px',
-            backgroundColor: selectedDay === index ? '#007bff' : '#ffffff',
-            color: selectedDay === index ? '#ffffff' : '#000000',
-            padding: '5px 10px',
-            border: '1px solid #007bff',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
-        >
-          {new Date(day).toLocaleDateString()}
-        </button>
-      ))}
-    </div>
+    <Box sx={{ height: '100%' }}>
+      <ToggleButtonGroup
+        orientation="vertical"
+        value={selectedDay}
+        exclusive
+        onChange={(_, value) => value !== null && onDaySelect(value)}
+        sx={{
+          height: '100%',
+          display: 'flex',
+          '& .MuiToggleButton-root': {
+            py: 2,
+            justifyContent: 'flex-start',
+            borderLeft: '1px solid rgba(0, 0, 0, 0.12)',
+            borderRadius: '4px !important',
+            mb: 1,
+            flex: 1
+          }
+        }}
+      >
+        {days.map((day, index) => (
+          <ToggleButton 
+            key={day} 
+            value={index}
+            sx={{
+              textTransform: 'none',
+              width: '100%'
+            }}
+          >
+            {formatDay(day)}
+          </ToggleButton>
+        ))}
+      </ToggleButtonGroup>
+    </Box>
   );
 };
 

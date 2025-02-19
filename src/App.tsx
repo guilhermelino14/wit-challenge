@@ -105,18 +105,27 @@ function App() {
             {weather ? (
               <>
                 <Grid item xs={12}>
-                  <Paper elevation={3} sx={{ p: 2 }}>
-                    <Typography variant="h4" gutterBottom>
-                      {weather.city.name}
-                    </Typography>
-                    <DaySelector
-                      days={days}
-                      selectedDay={selectedDay}
-                      onDaySelect={setSelectedDay}
-                    />
-                  </Paper>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} md={4}>
+                      <Paper elevation={3} sx={{ p: 2, height: '400px' }}>
+                        <DaySelector
+                          days={days}
+                          selectedDay={selectedDay}
+                          onDaySelect={setSelectedDay}
+                          temperatures={groupedByDay}
+                        />
+                      </Paper>
+                    </Grid>
+                    <Grid item xs={12} md={8}>
+                      <Paper elevation={3} sx={{ p: 2, height: '400px' }}>
+                        {lat && lon && (
+                          <WeatherMap lat={lat} lon={lon} city={weather.city.name} />
+                        )}
+                      </Paper>
+                    </Grid>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12}>
                   <Paper elevation={3} sx={{ p: 2 }}>
                     <TemperatureChart
                       temperatures={selectedDayTemperatures}
@@ -125,15 +134,8 @@ function App() {
                     />
                   </Paper>
                 </Grid>
-                <Grid item xs={12} md={6}>
-                  <Paper elevation={3} sx={{ p: 2, height: '100%' }}>
-                    {lat && lon && (
-                      <WeatherMap lat={lat} lon={lon} city={weather.city.name} />
-                    )}
-                  </Paper>
-                </Grid>
               </>
-            ): (
+            ) : (
               <Grid item xs={12}>
                 <Paper elevation={3} sx={{ p: 4 }}>
                   <Typography variant="h6" align="center" color="text.secondary">

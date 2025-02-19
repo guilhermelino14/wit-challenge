@@ -37,5 +37,6 @@ export interface TemperatureChartProps{
 export interface DaySelectorProps {
   days: string[];
   selectedDay: number;
-  onDaySelect: (index: number) => void;
+  onDaySelect: (day: number) => void;
+  temperatures: Record<string, Array<{ hour: string; temp: number }>>;
 }

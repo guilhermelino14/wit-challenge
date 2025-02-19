@@ -1,5 +1,6 @@
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
+import { Box } from '@mui/material';
 import { TemperatureChartProps } from "../types";
 
 ChartJS.register(
@@ -13,6 +14,19 @@ ChartJS.register(
 );
 
 const TemperatureChart = ({ temperatures, unit, labels }: TemperatureChartProps) => {
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: true,
+        text: 'Temperature Throughout the Day',
+      },
+    },
+  };
 
   const data = {
     labels: labels || temperatures.map((_, i) => `Day ${i + 1}`),
@@ -22,15 +36,16 @@ const TemperatureChart = ({ temperatures, unit, labels }: TemperatureChartProps)
         data: temperatures,
         fill: false,
         borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1,
+        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+        tension: 0.4,
       },
     ],
   };
 
   return (
-    <div style={{ height: '400px' ,maxWidth: '100%', margin: '0 auto' }}>
-      <Line data={data} />
-    </div>
+    <Box sx={{ width: '100%', height: '400px' }}>
+      <Line options={options} data={data} />
+    </Box>
   );
 };
 
