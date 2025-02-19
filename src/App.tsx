@@ -95,13 +95,6 @@ function App() {
                 </Box>
               </Paper>
             </Grid>
-            <Grid item xs={12}>
-              <Paper elevation={3} sx={{p:2}}>
-                <Typography align="center">
-                  Current Temperature : {weather?.list[0].main.temp.toFixed(1)}º{unit === "metric" ? "C" : "F"}
-                </Typography>
-              </Paper>
-            </Grid>
             {error && (
               <Grid item xs={12}>
                 <Paper elevation={3} sx={{ p: 2, bgcolor: '#ffebee' }}>
@@ -109,8 +102,15 @@ function App() {
                 </Paper>
               </Grid>
             )}
-            {weather ? (
+            {weather && (
               <>
+                <Grid item xs={12}>
+                  <Paper elevation={3} sx={{ p: 2 }}>
+                    <Typography align="center">
+                      Current Temperature : {weather?.list[0].main.temp.toFixed(1)}º{unit === "metric" ? "C" : "F"}
+                    </Typography>
+                  </Paper>
+                </Grid>
                 <Grid item xs={12}>
                   <Grid container spacing={3}>
                     <Grid item xs={12} md={4}>
@@ -142,7 +142,8 @@ function App() {
                   </Paper>
                 </Grid>
               </>
-            ) : (
+            )}
+            {!weather && !error && (
               <Grid item xs={12}>
                 <Paper elevation={3} sx={{ p: 4 }}>
                   <Typography variant="h6" align="center" color="text.secondary">
