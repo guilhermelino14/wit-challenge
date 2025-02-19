@@ -1,7 +1,5 @@
 # Live preview
-```
-https://wit-challenge.vercel.app/
-```
+[live preview wit-challenge](https://wit-challenge.vercel.app/)
 
 # Commands to run the project
 ```
