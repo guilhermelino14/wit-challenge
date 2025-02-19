@@ -1,6 +1,6 @@
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { format } from 'date-fns';
-import { enAU } from 'date-fns/locale';
+import { enUS } from 'date-fns/locale';
 import { DaySelectorProps } from '../types';
 
 const DaySelector = ({ days, selectedDay, onDaySelect, temperatures }: DaySelectorProps) => {
@@ -14,7 +14,7 @@ const DaySelector = ({ days, selectedDay, onDaySelect, temperatures }: DaySelect
 
   const formatDay = (dateStr: string) => {
     const date = new Date(dateStr);
-    const formattedDate = format(date, "EEE, MMM d", { locale: enAU });
+    const formattedDate = format(date, "EEE, MMM d", { locale: enUS });
     const { max, min } = getMinMaxTemp(temperatures[dateStr]);
     
     return `${formattedDate} - ${max}°/${min}°`;
